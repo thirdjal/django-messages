@@ -1,0 +1,23 @@
+.message-reply {
+    border-left-style: solid;
+    border-left-width: 3px;
+    padding-left: 1rem;
+}
+
+.current-message {
+    font-weight: bold;
+}
+
+.delete-attachment,
+.read-toggler {
+    cursor: pointer;
+    transition: .1s;
+}
+
+.mailbox a:hover {
+    text-decoration: none;
+}
+
+.empty-form {
+    display: none!important;
+}

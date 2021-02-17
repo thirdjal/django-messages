@@ -1,0 +1,35 @@
+{% extends "messaging/mailbox_base.htm" %}
+
+{% load humanize %}
+
+{% block title %}{{ block.super }}: Inbox{% endblock %}
+
+{% block message_content %}
+  <div class="list-group list-group-flush mt-3">
+    <div class="list-group-item list-group-item-dark">
+      <div class="row" id="sent-items-header">
+        <div class="col-1"></div>
+        <div class="col-3"><strong>To</strong></div>
+        <div class="col"><strong>Subject</strong></div>
+        <div class="col-3"><strong>Sent</strong></div>
+      </div>
+    </div>
+    {% for entry in mailbox_items.all %}
+      <div class="list-group-item list-group-item-action">
+        <div class="row">
+          <div class="col-1 text-center read-toggler{% if entry.read %} d-none{% endif %}" data-action="read" data-message="{{ entry.message.pk }}" data-toggle="tooltip" title="Mark as read">
+            <i class="fas fa-circle text-primary"></i>
+          </div>
+          <div class="col-1 text-center read-toggler{% if not entry.read %} d-none{% endif %}" data-action="unread" data-message="{{ entry.message.pk }}" data-toggle="tooltip" title="Mark as unread">
+            <i class="far fa-circle text-primary"></i>
+          </div>
+          <div class="col-3"><a href="{{ entry.message.get_absolute_url }}">{{ entry.message.author }}</a></div>
+          <div class="col"><a href="{{ entry.message.get_absolute_url }}">{{ entry.message.subject }}</a></div>
+          <div class="col-3"><a href="{{ entry.message.get_absolute_url }}"><span data-toggle="tooltip" title="{{ entry.date_received|date }} at {{ entry.date_received|time }}">{{ entry.date_received|naturaltime }}</span>{% if entry.message.attachments.exists %} <i class="fas fa-paperclip float-right"></i>{% endif %}</a></div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="list-group-item text-center p-5">You have no messages</div>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+<div class="row reply-form-wrapper py-3">
+<div class="col-md-8 offset-md-2 collapse" id="reply-form{% if forloop %}-{{ forloop.parentloop.counter }}{{ forloop.counter }}{% endif %}">
+    <form method="post" action="{% url 'messaging:create' %}">
+        {{ form.non_field_errors }}
+        <div class="form-group">
+            <textarea
+                    class="form-control{% if form.body.errors %} is-invalid{% elif form.errors %} is-valid{% endif %}"
+                    name="body" rows="8" required id="{{ form.body.id_for_label }}"
+                    placeholder="{{ form.body.help_text }}"
+                    aria-label="{{ form.body.label }}">{% if form.body.value %}{{ form.body.value }}{% endif %}</textarea>
+            {% if form.body.errors %}
+                <ul class="invalid-feedback list-unstyled" id="{{ form.body.id_for_label }}_errors">
+                    {% for error in form.body.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <input type="hidden" name="subject" maxlength="998" required id="id_subject"
+               value="{{ message.subject }}">
+        <input type="hidden" name="parent" id="id_parent" value="{{ message.pk }}">
+        {% csrf_token %}
+        <button class="btn btn-outline-primary btn-block" type="submit">Reply <i class="fas fa-reply"></i></button>
+    </form>
+</div>
+</div>

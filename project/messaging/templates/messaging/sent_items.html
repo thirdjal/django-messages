@@ -1,0 +1,28 @@
+{% extends "messaging/mailbox_base.htm" %}
+
+{% load humanize %}
+
+{% block title %}{{ block.super }}: Sent{% endblock %}
+
+{% block message_content %}
+  <div class="list-group list-group-flush mt-3">
+    <div class="list-group-item list-group-item-dark">
+      <div class="row" id="message-list-header">
+        <div class="col-3"><strong>To</strong></div>
+        <div class="col"><strong>Subject</strong></div>
+        <div class="col-3"><strong>Sent</strong></div>
+      </div>
+    </div>
+    {% for message in sent_items.all %}
+      <div class="list-group-item list-group-item-action">
+        <a href="{{ message.get_absolute_url }}" class="row text-decoration-none">
+          <div class="col-3">{{ message.author }}</div>
+          <div class="col">{{ message.subject }}</div>
+          <div class="col-3"><span data-toggle="tooltip" title="{{ message.date_sent }}">{{ message.date_sent|naturaltime }}</span>{% if message.attachments.exists %} <i class="fas fa-paperclip float-right"></i>{% endif %}</div>
+        </a>
+      </div>
+    {% empty %}
+      <div class="list-group-item text-center p-5">No Messages to Display</div>
+    {% endfor %}
+  </div>
+{% endblock %}

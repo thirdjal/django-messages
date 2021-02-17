@@ -1,0 +1,28 @@
+{% extends "messaging/mailbox_base.htm" %}
+
+{% load humanize %}
+
+{% block title %}{{ block.super }}: Inbox{% endblock %}
+
+{% block message_content %}
+  <div class="list-group list-group-flush mt-3">
+    <div class="list-group-item list-group-item-dark">
+      <div class="row" id="message-list-header">
+        <div class="col-3"><strong>To</strong></div>
+        <div class="col"><strong>Subject</strong></div>
+        <div class="col-3"><strong>Modified</strong></div>
+      </div>
+    </div>
+    {% for draft in drafts.all %}
+      <div class="list-group-item list-group-item-action">
+        <a href="{% url 'messaging:update' draft.pk %}" class="row text-decoration-none">
+          <div class="col-3">{{ draft.author }}</div>
+          <div class="col">{{ draft.subject }}</div>
+          <div class="col-3"><span data-toggle="tooltip" title="{{ draft.date_modified }}">{{ draft.date_modified|naturaltime }}</span>{% if draft.attachments.exists %} <i class="fas fa-paperclip float-right"></i>{% endif %}</div>
+        </a>
+      </div>
+    {% empty %}
+      <div class="list-group-item text-center p-5">No Messages to Display</div>
+    {% endfor %}
+  </div>
+{% endblock %}

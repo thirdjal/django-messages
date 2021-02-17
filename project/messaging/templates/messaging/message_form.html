@@ -1,0 +1,88 @@
+{% extends "messaging/mailbox_base.htm" %}
+
+{% block title %}{{ block.super }}: New Message{% endblock %}
+
+{% block message_content %}
+  <form method="post" action="" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+      {{ form.subject }}
+      {% if form.subject.help_text %}
+        <small id="{{ form.subject.id_for_label }}_help" class="form-text text-muted">{{ form.subject.help_text }}</small>
+      {% endif %}
+      {% if form.subject.errors %}
+        <ul class="invalid-feedback list-unstyled" id="{{ form.subject.id_for_label }}_errors">
+          {% for error in form.subject.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.body.id_for_label }}">{{ form.body.label }}</label>
+      {{ form.body }}
+      {% if form.body.help_text %}
+        <small id="{{ form.body.id_for_label }}_help" class="form-text text-muted">{{ form.body.help_text }}</small>
+      {% endif %}
+      {% if form.body.errors %}
+        <ul class="invalid-feedback list-unstyled" id="{{ form.body.id_for_label }}_errors">
+          {% for error in form.body.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <fieldset id="attachments">
+      <div class="custom-file form-row">
+        <div class="col-6">
+          <label class="custom-file-label" for="{{ attachment_form.attachments.id_for_label }}">{{ attachment_form.attachments.label }}</label>
+          {{ attachment_form.attachments }}
+          {% if attachment_form.attachments.help_text %}
+            <small id="{{ attachment_form.attachments.id_for_label }}_help" class="form-text text-muted">{{ attachment_form.attachments.help_text }}</small>
+          {% endif %}
+          {% if attachment_form.attachments.errors %}
+            <ul class="invalid-feedback list-unstyled" id="{{ attachment_form.attachments.id_for_label }}_errors">
+              {% for error in attachment_form.attachments.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if message.attachments.exists %}
+        <ul class="fa-ul">
+          {% for attachment in message.attachments.all %}
+            <li class="d-inline-block mr-5" id="attachment-{{ attachment.pk }}">
+              <span class="fa-li"><i class="far fa-file"></i></span>
+              <a href="{{ attachment.file.url }}" target="_blank">{{ attachment }}</a>
+              <span class="delete-attachment text-muted" data-action="delete" data-attachment="{{ attachment.pk }}" data-toggle="tooltip" title="remove this attachment">
+              <i class="fas fa-times-circle fa-xs"></i>
+            </span>
+            </li>
+          {% endfor %}
+        </ul>
+        <small class="text-muted">
+          <span id="attachment-counter">{{ message.attachments.count }}</span> attachment{{ message.attachments.count|pluralize }}
+        </small>
+
+      {% endif %}
+    </fieldset>
+    <input type="hidden" name="parent" id="id_parent"></p>
+    {% csrf_token %}
+    <button class="btn btn-primary" type="submit">Send</button>
+    <button class="btn btn-outline-primary" type="submit" name="draft">Save Draft</button>
+  </form>
+{% endblock %}
+
+
+{% block js %}
+  {{ block.super }}
+  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.3.4/dist/bs-custom-file-input.min.js"
+          integrity="sha256-e0DUqNhsFAzOlhrWXnMOQwRoqrCRlofpWgyhnrIIaPo=" crossorigin="anonymous"></script>
+  <script>
+    bsCustomFileInput.init()
+  </script>
+{% endblock js %}

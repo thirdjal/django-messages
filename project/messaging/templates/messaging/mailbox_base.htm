@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="card mailbox">
+        <div class="card-body">
+            <div class="row">
+                <aside class="col-lg-2" id="sidebar">
+                    <div class="text-center mb-3" id="sidebar-header">
+                        <i class="fas fa-envelope fa-fw fa-8x text-black-50"></i>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'messaging:create' %}">
+                            <i class="fas fa-edit"></i> New message
+                        </a>
+                    </div>
+                    <hr>
+                    <nav class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == 'inbox' %} active{% endif %}"
+                               href="{% url 'messaging:inbox' %}">
+                                <i class="fas fa-inbox fa-fw"></i> Inbox
+                                <span class="badge badge-light float-right unread-messages-counter{% if not user.mailbox.unread %} d-none{% endif %}">{{ user.mailbox.unread }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == 'drafts' %} active{% endif %}"
+                               href="{% url 'messaging:drafts' %}">
+                                <i class="fas fa-file-alt fa-fw"></i> Drafts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == 'sent' %} active{% endif %}"
+                               href="{% url 'messaging:sent' %}">
+                                <i class="fas fa-paper-plane fa-fw"></i> Sent
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == 'trash' %} active{% endif %}"
+                               href="{% url 'messaging:trash' %}">
+                                <i class="fas fa-trash-alt fa-fw"></i> Trash
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == 'archive' %} active{% endif %}"
+                               href="{% url 'messaging:archive' %}">
+                                <i class="fas fa-archive fa-fw"></i> Archive
+                            </a>
+                        </li>
+
+                    </nav>
+                </aside>
+                <div class="col-lg-10" id="document-window">
+                    {% block message_content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script>
+        const update_url = "{% url 'messaging:api_update' %}"
+        const delete_url = "{% url 'messaging:api_delete' %}"
+        const csrf_token = "{{ csrf_token }}"
+
+        // Enable Bootstrap tooltips
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script src="{% static 'js/mailbox.js' %}"></script>
+{% endblock %}

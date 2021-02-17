@@ -1,0 +1,55 @@
+{% load humanize %}
+
+{% if request.resolver_match.kwargs.pk == message.pk %}
+    <div class="list-group-item mb-3">
+        <div class="row message-wrapper">
+            <div class="col-md-2">
+                {{ message.author }}
+            </div>
+            <div class="col-md">
+                <div class="row">
+                    <div class="col">
+                        <div>{{ message.body|linebreaks }}</div>
+                    </div>
+                    <div class="col-2 text-muted text-right">
+                        <small>Received</small><br/>
+                        <small>{{ message.status.date_received|naturaltime }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "messaging/snippets/reply.html" %}
+    </div>
+{% else %}
+
+
+    <li class="list-group-item list-group-item-action">
+    {% include "messaging/snippets/list_entry_old.html" with entry=object %}
+        <div class="row message-wrapper">
+            <div class="col-md-2">
+                {{ object.message.author }}
+            </div>
+            <div class="col-md">
+                <div class="row">
+                    <div class="col">
+                        <a href="{{ object.message.get_absolute_url }}">{{ object.message.body|truncatewords:20 }}</a>
+                    </div>
+                    <div class="col-2 text-right">
+                        <small class="text-muted">Received</small><br/>
+                        <small class="text-muted">{{ message.date_sent|naturaltime }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "messaging/snippets/reply.html" %}
+    </li>
+{% endif %}
+
+{% if message.replies.exists %}
+    <ul class="list-group list-group-flush message-reply">
+        {% for reply in message.replies.all %}
+            {% include "messaging/snippets/message.html" with message=reply %}
+        {% endfor %}
+    </ul>
+{% endif %}
+

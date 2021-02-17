@@ -1,0 +1,29 @@
+{% load humanize %}
+<article class="row">
+    <div class="col-md-2 justify-content-between">
+        {% if not message.author == user %}
+            <a href="{{ message.author.get_absolute_url }}">
+                <img class="rounded-circle d-block" src="{{ message.author.photo.url }}" height="80" width="80">
+                {{ message.author }}
+            </a>
+        {% endif %}
+    </div>
+    <div class="col-md">
+        <div class="d-flex justify-content-between">
+            <a href="{{ message.get_absolute_url }}"><h3 class="card-title">{{ message.subject }}</h3></a>
+            {% if not message.author == user %}
+                <span class="read-toggler{% if message.date_read %} d-none{% endif %}" data-action="read"
+                      data-message="{{ message.pk }}" data-toggle="tooltip" title="Mark as read">
+                <i class="fas fa-circle text-primary"></i>
+            </span>
+                <span class="read-toggler{% if not message.date_read %} d-none{% endif %}" data-action="unread"
+                      data-message="{{ message.pk }}" data-toggle="tooltip" title="Mark as unread">
+                <i class="far fa-circle text-primary"></i>
+            </span>
+            {% endif %}
+        </div>
+        <a href="{{ message.get_absolute_url }}"><p class="card-text">{{ message.body|linebreaks|truncatewords:20 }}</p>
+        </a>
+        <small class="card-subtitle">{{ message.date_sent|naturaltime }}</small>
+    </div>
+</article>
