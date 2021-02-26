@@ -4,7 +4,7 @@ from .models import Message
 
 
 class AttachmentForm(forms.Form):
-    attachments = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True, "class": "custom-file-input col-6"}))  # attrs={"class": "custom-file-input"}
+    attachments = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True, "class": "custom-file-input"}))  # attrs={"class": "custom-file-input"}
 
 
 class MessageForm(forms.ModelForm):
@@ -13,6 +13,6 @@ class MessageForm(forms.ModelForm):
         fields = ("subject", "body", "parent")
         widgets = {
             "subject": forms.TextInput(attrs={"class": "form-control"}),
-            "body": forms.Textarea(attrs={"class": "form-control"}),
+            "body": forms.HiddenInput(),
             "parent": forms.HiddenInput()
         }

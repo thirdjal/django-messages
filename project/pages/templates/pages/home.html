@@ -3,15 +3,15 @@
 {% block title %}{{ block.super }}: {{ page.title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
-    {% for block in page.content_blocks.all %}
-        <article class="card">
-            <div class="card-body">
-                {% if block.heading %}<h2 class="card-title">{{ block.heading }}</h2>{% endif %}
-                <div class="card-text">
-                    {{ block.body }}
-                </div>
-            </div>
-        </article>
-    {% endfor %}
+  <h1>{{ page.title }}</h1>
+  {% for block in page.content_blocks.all %}
+    <article class="card">
+      <div class="card-body">
+        {% if block.heading %}<h2 class="card-title">{{ block.heading }}</h2>{% endif %}
+        <div class="card-text">
+          {{ block.body }}
+        </div>
+      </div>
+    </article>
+  {% endfor %}
 {% endblock %}

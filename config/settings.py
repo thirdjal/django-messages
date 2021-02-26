@@ -16,7 +16,6 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 APPS_DIR = BASE_DIR / "project"
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ SECRET_KEY = "qy17y0t2ikcp20^h59o2y(1jdoqcq=50uzus6v^+@)5_ao527g"
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -41,9 +39,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third-party
+    "ckeditor",
+    "ckeditor_uploader",
     "debug_toolbar",
+    "easy_formset",
     "localflavor",
     "phonenumber_field",
+    "tinymce",
     # Local
     "project.addresses.apps.AddressesConfig",
     "project.members.apps.MembersConfig",
@@ -82,7 +84,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -92,7 +93,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -120,7 +120,6 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -136,7 +135,6 @@ USE_TZ = True
 
 LOCALE_PATHS = [BASE_DIR / "locale"]
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -146,12 +144,10 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
 
-
 # Custom User Model
 # https://docs.djangoproject.com/en/3.1/topics/auth/customizing/#auth-custom-user
 
 AUTH_USER_MODEL = "members.Member"
-
 
 # Internal IP Addresses
 # https://docs.djangoproject.com/en/3.1/ref/settings/#internal-ips
@@ -163,3 +159,28 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
 PHONENUMBER_DEFAULT_REGION = "US"
+
+# django-tinymce
+# https://django-tinymce.readthedocs.io/en/latest/installation.html#configuration
+
+TINYMCE_INCLUDE_JQUERY = False
+TINYMCE_DEFAULT_CONFIG = {
+    "default_link_target": "_blank",
+    "link_quicklink": True,
+    "link_title": False,
+    "menubar": False,
+    "plugins": "autoresize emoticons hr link lists table",
+    "statusbar": False,
+    "toolbar": "formatselect fontselect | bold italic underline strikethrough bullist numlist link | emoticons table hr | alignleft aligncenter alignright alignjustify |  table numlist bullist | removeformat",
+}
+
+
+# django-ckeditor
+# https://github.com/django-ckeditor/django-ckeditor
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "removePlugins": "stylesheetparser",
+    }
+}
+CKEDITOR_UPLOAD_PATH = "uploads/"

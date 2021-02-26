@@ -3,10 +3,10 @@
 {% block title %}{{ block.super }}: {{ member }}{% endblock %}
 
 {% block content %}
-    <div class="card">
-        <div class="card-body">
-            <img class="rounded-circle d-block" src="{{ member.photo.url }}" height="300" width="300">
-            <h1 class="card-title text-center">{{ member }}</h1>
-        </div>
+  <div class="card">
+    <div class="card-body">
+      <img class="rounded-circle d-block" src="{{ member.photo.url }}" height="300" width="300">
+      <h1 class="card-title text-center">{{ member }}</h1>
     </div>
+  </div>
 {% endblock %}

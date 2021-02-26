@@ -19,7 +19,11 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    # Django
     path("admin/", admin.site.urls),
+    # Third-party apps
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    # local apps
     path("mail/", include("project.messaging.urls")),
     path("members/", include("project.members.urls")),
     path("", include("project.pages.urls")),

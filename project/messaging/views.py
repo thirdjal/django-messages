@@ -83,7 +83,7 @@ class MessageCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         attachment_form = context["attachment_form"]
         files = self.request.FILES.getlist('attachments')
         if attachment_form.is_valid():
-            message = form.save(commit=False)
+            message = form.save()
             message.author = self.request.user
             for file in files:
                 Attachment.objects.create(message=message, file=file)

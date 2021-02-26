@@ -5,88 +5,85 @@
 {% block title %}{{ block.super }}: {{ message.subject }}{% endblock %}
 
 {% block message_content %}
-    <div class="list-group-item mb-3">
-        <div class="btn-toolbar mb-3 justify-content-center" role="toolbar" aria-label="Message actions toolbar">
-            <div class="btn-group btn-group-sm mr-3" role="group" arial-label="Archive or delete">
-                <button type="button" class="btn btn-outline-secondary move-btn{% if status.folder == status.Folder.ARCHIVE %} active{% endif %}" data-action="{% if status.folder == status.Folder.ARCHIVE %}unarchive{% else %}archive{% endif %}" data-message="{{ message.pk }}" data-toggle="tooltip" title="Archive this message">
-                    <i class="fas fa-archive"></i>
-                </button>
-                <button type="button" class="btn btn-outline-secondary move-btn{% if status.folder == status.Folder.TRASH %} active{% endif %}" data-action="{% if status.folder == status.Folder.TRASH %}recover{% else %}delete{% endif %}" data-message="{{ message.pk }}" data-toggle="tooltip" title="Move this message to Trash">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </div>
-            <div class="btn-group btn-group-sm" role="group" aria-label="reply or forward">
-                <button class="btn btn-outline-secondary btn-reply toolbar-button"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#reply-form{% if forloop %}-{{ forloop.parentloop.counter }}{{ forloop.counter }}{% endif %}"
-                        aria-controls="reply-form{% if forloop %}-{{ forloop.parentloop.counter }}{{ forloop.counter }}{% endif %}"
-                        aria-expanded="false" title="Reply to the author">
-                    <i class="fas fa-reply"></i>
-                </button>
-                <a class="btn btn-outline-secondary toolbar-button" href="#" data-toggle="tooltip" title="Reply to all"><i class="fas fa-reply-all"></i></a>
-                <a class="btn btn-outline-secondary toolbar-button" href="#" data-toggle="tooltip" title="Forward"><i class="fas fa-share"></i></a>
-            </div>
-        </div>
-
-        <div class="row message-wrapper">
-            <div class="col-md-2 text-center">
-                <a href="{{ message.author.get_absolute_url }}">
-                    <img src="{{ message.author.photo.url }}" class="img-block rounded-circle" height="80" width="80">
-                    {{ message.author }}
-                </a>
-            </div>
-            <div class="col-md">
-                <div class="row">
-                    <div class="col"><h3>{{ message.subject }}</h3></div>
-                    <div class="col-3 text-right">
-                        <small class="text-muted ">{{ status.date_received|naturaltime }}</small>
-                        <span class="read-toggler{% if status.date_read %} d-none{% endif %}" data-action="read"
-                              data-message="{{ message.pk }}" data-toggle="tooltip" title="Mark as read">
-                            <i class="fas fa-circle text-primary"></i>
-                        </span>
-                        <span class="read-toggler{% if not status.date_read %} d-none{% endif %}"
-                              data-action="unread"
-                              data-message="{{ message.pk }}" data-toggle="tooltip" title="Mark as unread">
-                            <i class="far fa-circle text-primary"></i>
-                        </span>
-                    </div>
-                </div>
-                <div>{{ message.body|linebreaks }}</div>
-      {% if message.attachments.exists %}
-        <ul class="fa-ul">
-          {% for attachment in message.attachments.all %}
-            <li class="d-inline-block mr-5" id="attachment-{{ attachment.pk }}">
-              <span class="fa-li"><i class="far fa-file"></i></span>
-              <a href="{{ attachment.file.url }}" target="_blank">{{ attachment }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-        <small class="text-muted">
-          <span id="attachment-counter">{{ message.attachments.count }}</span> attachment{{ message.attachments.count|pluralize }}
-        </small>
-
-      {% endif %}
-            </div>
-        </div>
-        {% include "messaging/snippets/reply.html" %}
+  <div class="list-group-item mb-3">
+    <div class="btn-toolbar mb-3 justify-content-center" role="toolbar" aria-label="Message actions toolbar">
+      <div class="btn-group btn-group-sm mr-3" role="group" arial-label="Archive or delete">
+        <button type="button" class="btn btn-outline-secondary move-btn{% if status.folder == status.Folder.ARCHIVE %} active{% endif %}" data-action="{% if status.folder == status.Folder.ARCHIVE %}unarchive{% else %}archive{% endif %}" data-message="{{ message.pk }}" data-toggle="tooltip" title="Archive this message">
+          <i class="fas fa-archive"></i>
+        </button>
+        <button type="button" class="btn btn-outline-secondary move-btn{% if status.folder == status.Folder.TRASH %} active{% endif %}" data-action="{% if status.folder == status.Folder.TRASH %}recover{% else %}delete{% endif %}" data-message="{{ message.pk }}" data-toggle="tooltip" title="Move this message to Trash">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+      <div class="btn-group btn-group-sm" role="group" aria-label="reply or forward">
+        <button class="btn btn-outline-secondary btn-reply toolbar-button"
+                type="button"
+                data-toggle="collapse"
+                data-target="#reply-form{% if forloop %}-{{ forloop.parentloop.counter }}{{ forloop.counter }}{% endif %}"
+                aria-controls="reply-form{% if forloop %}-{{ forloop.parentloop.counter }}{{ forloop.counter }}{% endif %}"
+                aria-expanded="false" title="Reply to the author">
+          <i class="fas fa-reply"></i>
+        </button>
+        <a class="btn btn-outline-secondary toolbar-button" href="#" data-toggle="tooltip" title="Reply to all"><i class="fas fa-reply-all"></i></a>
+        <a class="btn btn-outline-secondary toolbar-button" href="#" data-toggle="tooltip" title="Forward"><i class="fas fa-share"></i></a>
+      </div>
     </div>
+
+    <div class="row message-wrapper">
+      <div class="col-md-2 text-center">
+        <a href="{{ message.author.get_absolute_url }}">
+          <img src="{{ message.author.photo.url }}" class="img-block rounded-circle" height="80" width="80">
+          {{ message.author }}
+        </a>
+      </div>
+      <div class="col-md">
+        <div class="row">
+          <div class="col"><h3>{{ message.subject }}</h3></div>
+          <div class="col-3 text-right">
+            <small class="text-muted ">{{ status.date_received|naturaltime }}</small>
+            <span class="read-toggler{% if status.date_read %} d-none{% endif %}" data-action="read" data-message="{{ message.pk }}" data-toggle="tooltip" title="Mark as read">
+              <i class="fas fa-circle text-primary"></i>
+            </span>
+            <span class="read-toggler{% if not status.date_read %} d-none{% endif %}" data-action="unread" data-message="{{ message.pk }}" data-toggle="tooltip" title="Mark as unread">
+              <i class="far fa-circle text-primary"></i>
+            </span>
+          </div>
+        </div>
+        <div>{{ message.body|linebreaks }}</div>
+        {% if message.attachments.exists %}
+          <ul class="fa-ul">
+            {% for attachment in message.attachments.all %}
+              <li class="d-inline-block mr-5" id="attachment-{{ attachment.pk }}">
+                <span class="fa-li"><i class="far fa-file"></i></span>
+                <a href="{{ attachment.file.url }}" target="_blank">{{ attachment }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+          <small class="text-muted">
+            <span id="attachment-counter">{{ message.attachments.count }}</span> attachment{{ message.attachments.count|pluralize }}
+          </small>
+
+        {% endif %}
+      </div>
+    </div>
+    {% include "messaging/snippets/reply.html" %}
+  </div>
 {% endblock %}
 
 {% block js %}
-    {{ block.super }}
-    <script>
-        $(function () {
-            // initialize tooltips on all reply buttons
-            $('.btn-reply').tooltip().click(function () {
-            })
-        })
-        $('.btn-reply').on('click', function () {
-            // hide all other reply fields when another button is clicked
-            $('.collapse').collapse('hide');
-            $(".btn-reply").removeClass("active")
-            // toggle the active state of the button
-            $(this).addClass("active");
-        })
-    </script>
+  {{ block.super }}
+  <script>
+    $(function () {
+      // initialize tooltips on all reply buttons
+      $('.btn-reply').tooltip().click(function () {
+      })
+    })
+    $('.btn-reply').on('click', function () {
+      // hide all other reply fields when another button is clicked
+      $('.collapse').collapse('hide');
+      $(".btn-reply").removeClass("active")
+      // toggle the active state of the button
+      $(this).addClass("active");
+    })
+  </script>
 {% endblock %}
